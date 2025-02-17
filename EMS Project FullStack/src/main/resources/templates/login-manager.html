@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/styles/global.css">
+    <link rel="stylesheet" href="/public/styles/login.css">
+    
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+</head>
+
+<body>
+    <div class="login-card">
+        <h2 class="card-title mb-4">Manager Login</h2>
+
+        <!-- Display error message if credentials are incorrect -->
+        <p th:if="${param.error}" class="text-danger">Invalid email or password. Please try again.</p>
+
+        <form action="/login-manager" method="post">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com" required>
+                <label for="floatingEmail">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
+                <label for="floatingPassword">Password</label>
+            </div>
+
+          
+
+            <button class="btn btn-primary w-100" type="submit">Sign In</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

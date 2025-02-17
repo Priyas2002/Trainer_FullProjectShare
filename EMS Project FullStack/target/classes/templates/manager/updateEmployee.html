@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Update Employee</title>
+
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	rel="stylesheet" />
+
+<link rel="stylesheet" th:href="@{/public/styles/global.css}" />
+<link rel="stylesheet" th:href="@{/public/styles/sidebar.css}" />
+
+<style>
+main {
+	width: 100%;
+}
+
+.image-upload-container {
+	width: 200px;
+	position: relative;
+}
+
+.avatar-preview {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-bottom: 10px;
+	background-color: #f8f9fa;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 2px dashed #dee2e6;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.avatar-preview:hover {
+	border-color: #0d6efd;
+	background-color: #e9ecef;
+}
+
+.avatar-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.upload-icon {
+	font-size: 2.5rem;
+	color: #6c757d;
+	margin-bottom: 10px;
+}
+
+.upload-text {
+	color: #6c757d;
+	text-align: center;
+	padding: 0 20px;
+}
+
+.image-upload-container input[type="file"] {
+	display: none;
+}
+
+.image-actions {
+	display: none;
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 20px;
+	backdrop-filter: blur(20px);
+	padding: 5px 15px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.image-actions button {
+	background: none;
+	border: none;
+	width: fit-content;
+	color: #aa3e98;
+	padding: 5px 5px;
+	cursor: pointer;
+	transition: color 0.3s ease;
+}
+
+.image-actions button:hover {
+	color: #0d6efd;
+}
+
+.has-image .image-actions {
+	display: block;
+}
+
+.has-image:hover .image-actions {
+	display: block;
+}
+
+.drag-over {
+	border-style: solid;
+	border-color: #0d6efd;
+	background-color: rgba(13, 110, 253, 0.1);
+}
+
+.error-feedback {
+	color: #dc3545;
+	font-size: 0.875em;
+	margin-top: 0.25rem;
+	display: none;
+}
+</style>
+</head>
+
+<body style="display: flex;">
+
+	<main>
+
+		<!-- Main content -->
+		<div class="p-3">
+			<div class="card">
+				<div class="card-body">
+					<div th:if="${errorMessage}" class="alert alert-danger">
+						<p th:text="${errorMessage}"></p>
+					</div>
+					<form id="add-emp-form" th:action="@{/manager/employees/update}"
+						method="post">
+
+						<input type="hidden" name="id" th:value="${employee.id}" />
+
+						<div class="row g-3 mb-3">
+							<div class="col">
+								<!-- Header with title and avatar -->
+								<div class="mb-5">
+									<div class="col">
+										<h2 class="mb-1">Update Employee</h2>
+										<p class="text-muted mb-0">Update employee information
+											below</p>
+									</div>
+								</div>
+								<div class="">
+									<label for="first_name" class="form-label">First Name</label> <input
+										type="text" class="form-control" id="first_name"
+										name="first_name" th:value="${employee.firstName}" required />
+								</div>
+								<div class="">
+									<label for="last_name" class="form-label">Last Name</label> <input
+										type="text" class="form-control" id="last_name"
+										name="last_name" th:value="${employee.lastName}" required />
+								</div>
+							</div>
+							<!-- Personal Information -->
+							<div class="row g-3 mb-3">
+								<div class="col-md-6">
+									<label for="email" class="form-label">Email</label> <input
+										type="email" class="form-control" id="email" name="email"
+										th:value="${employee.email}" required />
+								</div>
+								<div class="col-md-6">
+									<label for="phone_no" class="form-label">Phone Number</label> <input
+										type="tel" class="form-control" id="phone_no" name="phone_no"
+										th:value="${employee.phoneNumber}" required />
+								</div>
+							</div>
+
+							<div class="row g-3 mb-3">
+								<div class="col-md-6">
+									<label for="position" class="form-label">Position</label> <select
+										class="form-select" id="position" name="position" required>
+										<option value="">Select Position</option>
+										<option value="Senior Developer"
+											th:selected="${employee.position == 'Senior Developer'}">Senior
+											Developer</option>
+										<option value="Junior Developer"
+											th:selected="${employee.position == 'Junior Developer'}">Junior
+											Developer</option>
+									</select>
+								</div>
+
+								<div class="col-md-6">
+									<label for="joined_date" class="form-label">Joined Date</label>
+									<input type="date" class="form-control" id="joined_date"
+										name="joined_date" placeholder="dd-MM-yyy"
+										th:value="${employee.joinedDate}" required />
+								</div>
+								<div class="col-md-6">
+									<label for="status" class="form-label">Status</label> <select
+										class="form-select" id="status" name="status" required>
+										<option value="ACTIVE"
+											th:selected="${employee.status == 'ACTIVE'}">Active</option>
+										<option value="INACTIVE"
+											th:selected="${employee.status == 'INACTIVE'}">Inactive</option>
+										<option value="ON LEAVE"
+											th:selected="${employee.status == 'ON LEAVE'}">On
+											Leave</option>
+									</select>
+								</div>
+							</div>
+
+							<!-- Buttons -->
+							<div class="d-flex justify-content-end gap-2 mt-4">
+								<a href="/manager/employees" class="btn btn-light">Cancel</a>
+								<button type="submit" class="btn btn-primary">Update
+									Employee</button>
+							</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+	
+</body>
+
+</html>
